@@ -302,7 +302,7 @@
           const slug = text.toLowerCase()
             .replace(/[^\w\u4e00-\u9fff]+/g, '-')
             .replace(/^-+|-+$/g, '');
-          const anchorId = `heading-${Date.now()}-${slug}`;
+          const anchorId = `heading-${slug}`;
           return `<h${depth} id="${anchorId}">
             <a class="heading-anchor" href="#${anchorId}" aria-hidden="true">#</a>
             ${text}
@@ -337,6 +337,19 @@
 
       // Generate TOC
       generateTOC(docBody);
+
+      // Scroll to anchor if coming from a section link
+      const scrollTo = sessionStorage.getItem('scrollTo');
+      if (scrollTo) {
+        sessionStorage.removeItem('scrollTo');
+        const slug = scrollTo.toLowerCase()
+          .replace(/[^\w\u4e00-\u9fff]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        setTimeout(() => {
+          const el = document.getElementById(`heading-${slug}`);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 200);
+      }
 
       // Set meta
       docMeta.innerHTML = `<span>Open-code-Studio · JMCL 文档</span>`;
@@ -408,19 +421,22 @@
     if (!link) return;
     const href = link.getAttribute('href');
     if (!href) return;
-    // Extract filename from URL (ignore path, hash, query)
-    const filename = href.split('/').pop().split('#')[0].split('?')[0];
-    const decoded = decodeURIComponent(filename);
+    // Extract filename and anchor hash from URL
+    const lastPart = href.split('/').pop();
+    const [filename, anchor] = lastPart.split('#');
+    const decoded = decodeURIComponent(filename.split('?')[0]);
     // Same-site: navigate within this SPA
     if (FILE_TO_ROUTE[decoded]) {
       e.preventDefault();
+      if (anchor) sessionStorage.setItem('scrollTo', anchor);
       navigate(`#${FILE_TO_ROUTE[decoded]}`);
       return;
     }
     // Cross-site → OCS: navigate to OCS page with hash
     if (OCS_FILE_TO_ROUTE[decoded]) {
       e.preventDefault();
-      window.location.href = `../../OCS/page/index.html#${OCS_FILE_TO_ROUTE[decoded]}`;
+      const hash = anchor ? `#${OCS_FILE_TO_ROUTE[decoded]}&scroll=${encodeURIComponent(anchor)}` : `#${OCS_FILE_TO_ROUTE[decoded]}`;
+      window.location.href = `../../OCS/page/index.html${hash}`;
     }
   });
     }

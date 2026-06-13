@@ -7,16 +7,6 @@
 <h1 align="center">JAVA Minecraft Launcher</h1>
 <!-- #END COPY -->
 
-<!-- #BEGIN COPY -->
-<!-- #PROPERTY NAME=BADGES -->
-<div align="center">
-
-[![GitHub](https://img.shields.io/badge/GitHub-repo-blue?style=flat-square&logo=github)]([GitHub](https://github.com/Open-code-Studio/JMCL))
-
-</div>
-<!-- #END COPY -->
-
----
 
 ## 简介
 

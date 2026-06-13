@@ -1,8 +1,5 @@
 # 平台支持状态
 
-<!-- #BEGIN LANGUAGE_SWITCHER -->
-[English](PLATFORM.md) | **中文**
-<!-- #END LANGUAGE_SWITCHER -->
 
 ## 启动器兼容性
 

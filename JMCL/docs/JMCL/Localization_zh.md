@@ -1,9 +1,5 @@
 # 本地化
 
-<!-- #BEGIN LANGUAGE_SWITCHER -->
-[English](Localization.md) | **中文**
-<!-- #END LANGUAGE_SWITCHER -->
-
 JMCL 为多种语言提供本地化支持。
 
 本文档介绍了 JMCL 对这些语言的支持状态，并给想要为 JMCL 的本地化工作做出贡献的贡献者提供了一份指南。

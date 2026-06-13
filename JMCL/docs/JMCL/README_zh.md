@@ -1,7 +1,7 @@
 <!-- #BEGIN COPY -->
 <!-- #PROPERTY NAME=TITLE -->
 <div align="center">
-    <img src="../IMG_0132.JPG" alt="JMCL Logo" width="64"/>
+    <img src="../../page/favicon.jpg" alt="JMCL Logo" width="64"/>
 </div>
 
 <h1 align="center">JAVA Minecraft Launcher</h1>
@@ -17,10 +17,6 @@
 <!-- #END COPY -->
 
 ---
-
-<!-- #BEGIN LANGUAGE_SWITCHER -->
-[English](README.md) | **中文**
-<!-- #END LANGUAGE_SWITCHER -->
 
 ## 简介
 

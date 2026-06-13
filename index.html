@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open-code-Studio 文档中心</title>
+  <style>
+    :root {
+      --primary: #1A6B8A;
+      --on-primary: #FFFFFF;
+      --surface: #121212;
+      --on-surface: #E4E2DF;
+      --surface-container: #252322;
+      --surface-container-high: #302D2B;
+      --on-surface-variant: #C8C5C2;
+      --outline-variant: #494846;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background-color: var(--surface);
+      color: var(--on-surface);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 640px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      background: var(--primary);
+      margin-bottom: 24px;
+    }
+
+    .logo svg text {
+      font-weight: 700;
+      fill: var(--on-primary);
+    }
+
+    h1 {
+      font-family: 'Noto Serif SC', "Songti SC", "STSong", serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--on-surface-variant);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 28px 20px;
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      border-radius: 16px;
+      text-decoration: none;
+      color: var(--on-surface);
+      transition: all 0.25s ease;
+    }
+
+    .card:hover {
+      background: var(--surface-container-high);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-icon.ocs {
+      background: rgba(26, 107, 138, 0.2);
+      color: #7FC8F8;
+    }
+
+    .card-icon.jmcl {
+      background: rgba(26, 107, 138, 0.2);
+      color: #7FC8F8;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+      line-height: 1.4;
+    }
+
+    footer {
+      margin-top: 48px;
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.5rem; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.loli.net">
+  <link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <rect width="80" height="80" rx="20" fill="#1A6B8A"/>
+        <text x="50%" y="54%" text-anchor="middle" dominant-baseline="central" font-size="30" font-weight="700" fill="#FFFFFF" font-family="system-ui">OCS</text>
+      </svg>
+    </div>
+
+    <h1>Open-code-Studio</h1>
+    <p class="subtitle">开源组织文档中心 — 选择要访问的站点</p>
+
+    <div class="cards">
+      <a href="OCS/page/index.html" class="card">
+        <div class="card-icon ocs">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <span class="card-title">OCS 主页</span>
+        <span class="card-desc">Open-code-Studio 组织介绍与开源项目</span>
+      </a>
+
+      <a href="JMCL/page/index.html" class="card">
+        <div class="card-icon jmcl">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <span class="card-title">JMCL 文档</span>
+        <span class="card-desc">JAVA Minecraft Launcher 使用文档</span>
+      </a>
+    </div>
+
+    <footer>
+      <a href="https://github.com/Open-code-Studio" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    </footer>
+  </div>
+</body>
+</html>

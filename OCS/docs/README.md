@@ -17,8 +17,8 @@
 
 | 项目 | 简介 | 状态 |
 |------|------|------|
-| [**JMCL**](https://github.com/Open-code-Studio/JMCL) | 开源、跨平台的 Minecraft 启动器 | 🚧 开发中 |
-| 更多项目 | 敬请期待... | 📋 规划中 |
+| [**JMCL**](https://open-code-studio.github.io/docs/JMCL/page/index.html#/) | 开源、跨平台的 Minecraft 启动器 | 持续更新 |
+| 更多项目 | 敬请期待... | 规划中 |
 
 ---
 

@@ -64,7 +64,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 90;
+  z-index: 80;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -85,7 +85,7 @@
   background-color: var(--md-sys-color-surface-container);
   border-right: 1px solid var(--md-sys-color-outline-variant);
   overflow-y: auto;
-  z-index: 80;
+  z-index: 90;
   transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
   display: flex;
   flex-direction: column;

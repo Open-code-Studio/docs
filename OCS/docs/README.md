@@ -24,7 +24,7 @@
 
 ## 📚 文档
 
-- [JMCL 文档站](../../JMCL/page/index.html) — 查看 JMCL 启动器的完整文档
+- [JMCL 文档站](https://open-code-studio.github.io/docs/JMCL/page/index.html#/) — 查看 JMCL 启动器的完整文档
 - [贡献指南](#/contributing) — 了解如何为我们的项目做贡献
 - [加入我们](#/join) — 成为 Open-code-Studio 的一员
 

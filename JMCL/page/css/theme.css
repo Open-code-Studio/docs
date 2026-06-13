@@ -1,27 +1,27 @@
 /* ============================================
-   Material Design 3 Theme - OCS JMCL Docs
+   Material Design 3 Theme - OCS Open-code-Studio Docs
    ============================================ */
 
 /* === Light Theme (default) === */
 :root,
 [data-theme="light"] {
-  /* Primary */
-  --md-sys-color-primary: #1A6B8A;
+  /* Primary - Green #4AA26F */
+  --md-sys-color-primary: #3A8E5E;
   --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-container: #C2E8F8;
-  --md-sys-color-on-primary-container: #001E2E;
+  --md-sys-color-primary-container: #C7EDD4;
+  --md-sys-color-on-primary-container: #002112;
 
   /* Secondary */
-  --md-sys-color-secondary: #4F5B62;
+  --md-sys-color-secondary: #4B6356;
   --md-sys-color-on-secondary: #FFFFFF;
-  --md-sys-color-secondary-container: #D3DFE6;
-  --md-sys-color-on-secondary-container: #0C1A1F;
+  --md-sys-color-secondary-container: #CDE8D8;
+  --md-sys-color-on-secondary-container: #082015;
 
   /* Tertiary */
-  --md-sys-color-tertiary: #6D5775;
+  --md-sys-color-tertiary: #426277;
   --md-sys-color-on-tertiary: #FFFFFF;
-  --md-sys-color-tertiary-container: #F6DAFF;
-  --md-sys-color-on-tertiary-container: #26152E;
+  --md-sys-color-tertiary-container: #C6E6FF;
+  --md-sys-color-on-tertiary-container: #001E2F;
 
   /* Error */
   --md-sys-color-error: #BA1A1A;
@@ -48,14 +48,14 @@
   /* Inverse */
   --md-sys-color-inverse-surface: #31302E;
   --md-sys-color-inverse-on-surface: #F4F0ED;
-  --md-sys-color-inverse-primary: #7FC8F8;
+  --md-sys-color-inverse-primary: #81DAAB;
 
   /* Shadows */
   --md-sys-color-shadow: #000000;
   --md-sys-color-scrim: #000000;
 
   /* Surface Tint */
-  --md-sys-color-surface-tint: #1A6B8A;
+  --md-sys-color-surface-tint: #3A8E5E;
 
   /* Elevation levels */
   --md-sys-elevation-0: none;
@@ -76,10 +76,10 @@
 
 /* === Dark Theme === */
 [data-theme="dark"] {
-  --md-sys-color-primary: #7FC8F8;
-  --md-sys-color-on-primary: #00344A;
-  --md-sys-color-primary-container: #004C6B;
-  --md-sys-color-on-primary-container: #C2E8F8;
+  --md-sys-color-primary: #81DAAB;
+  --md-sys-color-on-primary: #003920;
+  --md-sys-color-primary-container: #2E6B48;
+  --md-sys-color-on-primary-container: #C7EDD4;
 
   --md-sys-color-secondary: #B7C4CC;
   --md-sys-color-on-secondary: #222F35;
@@ -113,11 +113,11 @@
 
   --md-sys-color-inverse-surface: #E4E2DF;
   --md-sys-color-inverse-on-surface: #31302E;
-  --md-sys-color-inverse-primary: #1A6B8A;
+  --md-sys-color-inverse-primary: #3A8E5E;
 
   --md-sys-color-shadow: #000000;
   --md-sys-color-scrim: #000000;
-  --md-sys-color-surface-tint: #7FC8F8;
+  --md-sys-color-surface-tint: #81DAAB;
 }
 
 /* === Global Styles === */

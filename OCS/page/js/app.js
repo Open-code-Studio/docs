@@ -15,7 +15,7 @@
   };
 
   const DEFAULT_ROUTE = '/';
-  const DOC_DIR = '../docs';
+  const DOC_DIR = '/OCS/docs';
 
   // === DOM References ===
   const $ = (sel) => document.querySelector(sel);

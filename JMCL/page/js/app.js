@@ -17,7 +17,7 @@
   };
 
   const DEFAULT_ROUTE = '/';
-  const DOC_DIR = '../docs/JMCL';
+  const DOC_DIR = '/JMCL/docs/JMCL';
 
   // === DOM References ===
   const $ = (sel) => document.querySelector(sel);

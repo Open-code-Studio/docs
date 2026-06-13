@@ -11,7 +11,7 @@
 > 推荐使用 GitHub 进行技术讨论和问题反馈。
 
 - **组织主页**：[github.com/Open-code-Studio](https://github.com/Open-code-Studio)
-- **讨论区**：[GitHub Discussions](https://github.com/orgs/Open-code-Studio/discussions)
+- **讨论区**：
 [dingtalk](https://qr.dingtalk.com/action/joingroup?code=v1,k1,0NcGCZDR52jhQNC77XGTSe56HIx+OQyYJqMUvbkUBaJuRVJIwrSsXmL8oFqU5ajJ&_dt_no_comment=1&origin=11)
 
 ### 各项目 Issue

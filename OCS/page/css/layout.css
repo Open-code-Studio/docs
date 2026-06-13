@@ -353,6 +353,11 @@
   }
 }
 
+/* === Desktop: hide hamburger, sidebar always visible === */
+@media (min-width: 769px) {
+  #menuToggle { display: none; }
+}
+
 /* === Tablet / small desktop === */
 @media (min-width: 769px) and (max-width: 1200px) {
   .content-wrapper {

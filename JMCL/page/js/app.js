@@ -17,7 +17,7 @@
   };
 
   const DEFAULT_ROUTE = '/';
-  const DOC_DIR = '/docs/JMCL';
+  const DOC_DIR = '../docs/JMCL';
 
   // === DOM References ===
   const $ = (sel) => document.querySelector(sel);
@@ -292,14 +292,6 @@
             <a class="heading-anchor" href="#${anchorId}" aria-hidden="true">#</a>
             ${text}
           </h${depth}>`;
-        };
-
-        // Custom table renderer with wrapper
-        renderer.table = function({ header, body }) {
-          return `<div class="table-wrapper"><table>
-            <thead>${header}</thead>
-            <tbody>${body}</tbody>
-          </table></div>`;
         };
 
         // Custom code renderer

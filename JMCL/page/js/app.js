@@ -16,6 +16,12 @@
     '/license':      { file: '使用许可.txt',           title: '使用许可', icon: 'description' },
   };
 
+  // Build filename → route reverse mapping for internal doc links
+  const FILE_TO_ROUTE = {};
+  for (const [route, cfg] of Object.entries(ROUTES)) {
+    FILE_TO_ROUTE[cfg.file] = route;
+  }
+
   const DEFAULT_ROUTE = '/';
   const DOC_DIR = '../docs/JMCL';
 
@@ -386,6 +392,21 @@
   } else {
     waitForDeps();
   }
+
+  // === Intercept internal .md / .txt links → hash route ===
+  docBody.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href) return;
+    // Extract filename from URL (ignore path, hash, query)
+    const filename = href.split('/').pop().split('#')[0].split('?')[0];
+    const route = FILE_TO_ROUTE[decodeURIComponent(filename)];
+    if (route) {
+      e.preventDefault();
+      navigate(`#${route}`);
+    }
+  });
 
   // === Theme Toggle Event ===
   themeToggle.addEventListener('click', toggleTheme);

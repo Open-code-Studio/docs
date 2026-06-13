@@ -12,6 +12,7 @@
     '/contributing':{ file: 'CONTRIBUTING.md',    title: '贡献指南' },
     '/join':        { file: 'JOIN.md',            title: '加入我们' },
     '/contact':     { file: 'CONTACT.md',          title: '联系我们' },
+    '/info':        { file: 'info.md',              title: '关于' },
   };
 
   // Build filename → route reverse mapping for internal doc links
@@ -29,6 +30,7 @@
     'macOS_Usage_zh.md':     '/macos',
     'Localization_zh.md':    '/localization',
     '使用许可.txt':           '/license',
+    'info.md':               '/info',
   };
 
   const DEFAULT_ROUTE = '/';
@@ -169,7 +171,13 @@
 
   // === Document Loading ===
   async function loadDocument(route) {
-    const config = ROUTES[route];
+    let config = ROUTES[route];
+
+    // Auto-fallback: treat unknown route as direct filename
+    if (!config && (route.endsWith('.md') || route.endsWith('.txt'))) {
+      config = { file: route, title: route.replace(/\.(md|txt)$/i, '') };
+    }
+
     if (!config) {
       navigate(DEFAULT_ROUTE);
       return;
@@ -317,22 +325,23 @@
     if (!link) return;
     const href = link.getAttribute('href');
     if (!href) return;
-    // Extract filename and anchor hash from URL
+    // Only process .md / .txt links
     const lastPart = href.split('/').pop();
     const [filename, anchor] = lastPart.split('#');
     const decoded = decodeURIComponent(filename.split('?')[0]);
-    // Same-site: navigate within this SPA
-    if (FILE_TO_ROUTE[decoded]) {
-      e.preventDefault();
-      if (anchor) sessionStorage.setItem('scrollTo', anchor);
-      navigate(`#${FILE_TO_ROUTE[decoded]}`);
-      return;
-    }
-    // Cross-site → JMCL: navigate to JMCL page with hash
-    if (JMCL_FILE_TO_ROUTE[decoded]) {
-      e.preventDefault();
-      const hash = anchor ? `#${JMCL_FILE_TO_ROUTE[decoded]}&scroll=${encodeURIComponent(anchor)}` : `#${JMCL_FILE_TO_ROUTE[decoded]}`;
+    if (!decoded.endsWith('.md') && !decoded.endsWith('.txt')) return;
+
+    e.preventDefault();
+    // Same-site: has mapped route, or fallback to filename-as-route
+    const route = FILE_TO_ROUTE[decoded] || decoded;
+    if (anchor) sessionStorage.setItem('scrollTo', anchor);
+    // Cross-site → JMCL if path contains /JMCL/
+    if (href.includes('/JMCL/')) {
+      const jmclRoute = JMCL_FILE_TO_ROUTE[decoded] || decoded;
+      const hash = anchor ? `#${jmclRoute}&scroll=${encodeURIComponent(anchor)}` : `#${jmclRoute}`;
       window.location.href = `../../JMCL/page/index.html${hash}`;
+    } else {
+      navigate(`#${route}`);
     }
   });
 

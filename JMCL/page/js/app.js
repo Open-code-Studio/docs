@@ -14,6 +14,7 @@
     '/macos':        { file: 'macOS_Usage_zh.md',     title: 'macOS 技巧', icon: 'computer' },
     '/localization': { file: 'Localization_zh.md',    title: '本地化指南', icon: 'translate' },
     '/license':      { file: '使用许可.txt',           title: '使用许可', icon: 'description' },
+    '/info':         { file: 'info.md',                title: '关于', icon: 'info' },
   };
 
   // Build filename → route reverse mapping for internal doc links
@@ -29,6 +30,7 @@
     'CONTRIBUTING.md': '/contributing',
     'JOIN.md':         '/join',
     'CONTACT.md':      '/contact',
+    'info.md':         '/info',
   };
 
   const DEFAULT_ROUTE = '/';
@@ -257,7 +259,13 @@
 
   // === Document Loading ===
   async function loadDocument(route) {
-    const config = ROUTES[route];
+    let config = ROUTES[route];
+
+    // Auto-fallback: treat unknown route as direct filename
+    if (!config && (route.endsWith('.md') || route.endsWith('.txt'))) {
+      config = { file: route, title: route.replace(/\.(md|txt)$/i, '') };
+    }
+
     if (!config) {
       navigate(DEFAULT_ROUTE);
       return;
@@ -421,22 +429,23 @@
     if (!link) return;
     const href = link.getAttribute('href');
     if (!href) return;
-    // Extract filename and anchor hash from URL
+    // Only process .md / .txt links
     const lastPart = href.split('/').pop();
     const [filename, anchor] = lastPart.split('#');
     const decoded = decodeURIComponent(filename.split('?')[0]);
-    // Same-site: navigate within this SPA
-    if (FILE_TO_ROUTE[decoded]) {
-      e.preventDefault();
-      if (anchor) sessionStorage.setItem('scrollTo', anchor);
-      navigate(`#${FILE_TO_ROUTE[decoded]}`);
-      return;
-    }
-    // Cross-site → OCS: navigate to OCS page with hash
-    if (OCS_FILE_TO_ROUTE[decoded]) {
-      e.preventDefault();
-      const hash = anchor ? `#${OCS_FILE_TO_ROUTE[decoded]}&scroll=${encodeURIComponent(anchor)}` : `#${OCS_FILE_TO_ROUTE[decoded]}`;
+    if (!decoded.endsWith('.md') && !decoded.endsWith('.txt')) return;
+
+    e.preventDefault();
+    // Same-site: has mapped route, or fallback to filename-as-route
+    const route = FILE_TO_ROUTE[decoded] || decoded;
+    if (anchor) sessionStorage.setItem('scrollTo', anchor);
+    // Cross-site → OCS if path contains /OCS/
+    if (href.includes('/OCS/')) {
+      const ocsRoute = OCS_FILE_TO_ROUTE[decoded] || decoded;
+      const hash = anchor ? `#${ocsRoute}&scroll=${encodeURIComponent(anchor)}` : `#${ocsRoute}`;
       window.location.href = `../../OCS/page/index.html${hash}`;
+    } else {
+      navigate(`#${route}`);
     }
   });
     }

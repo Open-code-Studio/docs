@@ -1,12 +1,12 @@
 # ℹ️ 关于本站
 
-本网站使用 **openweb.kit-MD3** 框架搭建。
+本网站使用 **Openwebdocs.kit-MD3** 框架搭建。
 
 ---
 
 ## 框架介绍
 
-**openweb.kit-MD3** 是一个轻量级的文档站点框架，基于 Material Design 3 设计规范构建。
+**Openwebdocs.kit-MD3** 是一个轻量级的文档站点框架，基于 Material Design 3 设计规范构建。
 
 ### 核心特性
 

@@ -1,45 +1,75 @@
 /* ============================================
-   OCS JMCL Docs - Main Application
+   JMCL Docs - config.json driven
    ============================================ */
-
 (function() {
   'use strict';
 
-  // === Configuration ===
-  const ROUTES = {
-    '/':             { file: 'README_zh.md',         title: '项目介绍', icon: 'home' },
-    '/platform':     { file: 'PLATFORM_zh.md',        title: '平台支持', icon: 'devices' },
-    '/release':      { file: 'ReleaseSchedule_zh.md', title: '发布计划', icon: 'schedule' },
-    '/contributing': { file: 'Contributing_zh.md',    title: '贡献指南', icon: 'handshake' },
-    '/macos':        { file: 'macOS_Usage_zh.md',     title: 'macOS 技巧', icon: 'computer' },
-    '/localization': { file: 'Localization_zh.md',    title: '本地化指南', icon: 'translate' },
-    '/license':      { file: '使用许可.txt',           title: '使用许可', icon: 'description' },
-    '/info':         { file: 'info.md',                title: '关于', icon: 'info' },
-  };
+  // === Default fallback ===
+  const ROUTES = {};
+  let FILE_TO_ROUTE = {};
+  let SITE = { name:'JMCL', titleSuffix:'JMCL 文档', meta:'Open-code-Studio · JMCL 文档', docDir:'../docs/JMCL' };
+  let NAV = [];
+  let SIDEBAR_LINKS = [];
+  const DEFAULT_ROUTE = '/';
 
-  // Build filename → route reverse mapping for internal doc links
-  const FILE_TO_ROUTE = {};
-  for (const [route, cfg] of Object.entries(ROUTES)) {
-    FILE_TO_ROUTE[cfg.file] = route;
+  // SVG icons
+  const ICONS = {
+    home: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+    devices: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+    schedule: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    handshake: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    computer: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+    translate: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    description: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>',
+    info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+    external: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',
+  };
+  function iconSVG(name) { return ICONS[name] || ICONS.description; }
+
+  // === Load config.json ===
+  async function loadConfig() {
+    try {
+      const resp = await fetch('config.json');
+      if (!resp.ok) return;
+      const cfg = await resp.json();
+      if (cfg.site) Object.assign(SITE, cfg.site);
+      if (cfg.nav && Array.isArray(cfg.nav)) {
+        NAV = cfg.nav;
+        const nr = {}, nf = {};
+        cfg.nav.forEach(item => {
+          nr[item.route] = { file: item.file, title: item.title, icon: item.icon || 'description' };
+          nf[item.file] = item.route;
+        });
+        Object.assign(ROUTES, nr); Object.assign(FILE_TO_ROUTE, nf);
+      }
+      SIDEBAR_LINKS = cfg.sidebarLinks || [];
+    } catch (e) { console.warn('config.json load failed:', e.message); }
   }
 
-  // Cross-site: OCS filenames → routes (for inter-site link resolution)
-  const OCS_FILE_TO_ROUTE = {
-    'README.md':       '/',
-    'PROJECTS.md':     '/projects',
-    'CONTRIBUTING.md': '/contributing',
-    'JOIN.md':         '/join',
-    'CONTACT.md':      '/contact',
-    'info.md':         '/info',
-  };
+  // Render sidebar from config
+  function renderSidebarNav() {
+    if (!NAV.length) return;
+    navList.innerHTML = NAV.map(item => `
+      <li class="nav-item${item.route === DEFAULT_ROUTE ? ' active' : ''}" data-route="${item.route}">
+        <a href="#${item.route}" class="nav-link">
+          <svg viewBox="0 0 24 24" width="20" height="20" class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconSVG(item.icon)}</svg>
+          <span class="nav-label">${item.title}</span>
+        </a>
+      </li>`).join('');
+  }
 
-  const DEFAULT_ROUTE = '/';
-  const DOC_DIR = '../docs/JMCL';
+  function renderSidebarLinks() {
+    const container = $('#sidebarLinks');
+    if (!container) return;
+    container.innerHTML = SIDEBAR_LINKS.map(link => `
+      <a href="${link.url}" class="sidebar-footer-link" style="margin-top:4px"${link.external ? ' target="_blank"' : ''}>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconSVG(link.external ? 'external' : 'home')}</svg>
+        ${link.title}
+      </a>`).join('');
+  }
 
   // === DOM References ===
   const $ = (sel) => document.querySelector(sel);
-  const $$ = (sel) => document.querySelectorAll(sel);
-
   const docTitle = $('#docTitle');
   const docBody = $('#docBody');
   const docMeta = $('#docMeta');
@@ -58,75 +88,32 @@
     if (stored) return stored;
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
-
   function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
-
-    // Update theme icon SVG (moon for dark, sun for light)
     const isDark = theme === 'dark';
     themeIcon.innerHTML = isDark
-      ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'       // moon
-      : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'; // sun
+      ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+      : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
   }
-
   function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    setTheme(current === 'dark' ? 'light' : 'dark');
+    setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   }
-
-  // Initialize theme
   setTheme(getPreferredTheme());
-
-  // Listen for system theme changes
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!localStorage.getItem('theme')) {
-      setTheme(e.matches ? 'dark' : 'light');
-    }
+    if (!localStorage.getItem('theme')) setTheme(e.matches ? 'dark' : 'light');
   });
 
-  // === Sidebar (Drawer) Management ===
-  function openDrawer() {
-    sidebar.classList.add('open');
-    drawerOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    sidebar.classList.remove('open');
-    drawerOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  menuToggle.addEventListener('click', () => {
-    if (sidebar.classList.contains('open')) {
-      closeDrawer();
-    } else {
-      openDrawer();
-    }
-  });
-
+  // === Sidebar (Drawer) ===
+  function openDrawer() { sidebar.classList.add('open'); drawerOverlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function closeDrawer() { sidebar.classList.remove('open'); drawerOverlay.classList.remove('active'); document.body.style.overflow = ''; }
+  menuToggle.addEventListener('click', () => { sidebar.classList.contains('open') ? closeDrawer() : openDrawer(); });
   drawerOverlay.addEventListener('click', closeDrawer);
-
-  // Close drawer on nav click (mobile)
-  navList.addEventListener('click', (e) => {
-    if (window.innerWidth <= 768) {
-      closeDrawer();
-    }
-  });
+  navList.addEventListener('click', (e) => { if (window.innerWidth <= 768) closeDrawer(); });
 
   // === Scroll to Top ===
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-      scrollTopBtn.classList.add('visible');
-    } else {
-      scrollTopBtn.classList.remove('visible');
-    }
-  }, { passive: true });
-
-  scrollTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  window.addEventListener('scroll', () => { scrollTopBtn.classList.toggle('visible', window.scrollY > 300); }, { passive: true });
+  scrollTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
   // === Navigation ===
   function updateActiveNav(route) {
@@ -135,331 +122,153 @@
     });
   }
 
-  // === TOC Generation ===
+  // === TOC ===
   function generateTOC(contentElement) {
     tocList.innerHTML = '';
     const headings = contentElement.querySelectorAll('h2, h3');
-
-    if (headings.length === 0) {
-      document.getElementById('tocSidebar').style.display = 'none';
-      return;
-    }
-
+    if (!headings.length) { document.getElementById('tocSidebar').style.display = 'none'; return; }
     document.getElementById('tocSidebar').style.display = 'block';
-
-    headings.forEach((heading, index) => {
-      if (!heading.id) {
-        heading.id = `heading-${index}`;
-      }
-
+    headings.forEach((heading, i) => {
+      if (!heading.id) heading.id = `heading-${i}`;
       const li = document.createElement('li');
       const a = document.createElement('a');
-      a.href = `#${heading.id}`;
-      a.textContent = heading.textContent;
+      a.href = `#${heading.id}`; a.textContent = heading.textContent;
       a.className = heading.tagName === 'H3' ? 'toc-h3' : 'toc-h2';
-
-      // Smooth scroll for TOC links
       a.addEventListener('click', (e) => {
         e.preventDefault();
-        const target = document.getElementById(heading.id);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          history.replaceState(null, '', `#${heading.id}`);
-        }
+        const el = document.getElementById(heading.id);
+        if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', `#${heading.id}`); }
       });
-
-      li.appendChild(a);
-      tocList.appendChild(li);
+      li.appendChild(a); tocList.appendChild(li);
     });
   }
 
-  // === Markdown Processing ===
+  function escapeHtml(text) { const d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
+
+  // === Preprocess Markdown ===
   function preprocessMarkdown(md) {
-    // Strip macro comments like <!-- #BEGIN ... --> and <!-- #END ... -->
     md = md.replace(/<!--\s*#(?:BEGIN|END)\s+\w+\s*-->/g, '');
-    // Strip <!-- #PROPERTY ... --> lines
     md = md.replace(/<!--\s*#PROPERTY.*?-->/g, '');
-    // Strip language switcher div
     md = md.replace(/<div align="center">[\s\S]*?<\/div>/g, '');
-    // Clean up empty lines
     md = md.replace(/\n{3,}/g, '\n\n');
     return md.trim();
   }
 
   function processTxt(text) {
-    // Convert plain text file to HTML paragraphs
     const lines = text.split('\n');
-    let html = '';
-    let inList = false;
-
+    let html = '', inList = false;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
-
-      if (!line) {
-        if (inList) {
-          html += '</ol>';
-          inList = false;
-        }
-        continue;
-      }
-
-      // Check if looks like a heading (numbered with period like "第一条")
-      if (/^第[一二三四五六七八九十百千]+条/.test(line)) {
-        if (inList) {
-          html += '</ol>';
-          inList = false;
-        }
-        html += `<h2 id="heading-${i}">${escapeHtml(line)}</h2>`;
-        continue;
-      }
-
-      // Check if looks like a list item (numbered like "1)" or "1.")
+      if (!line) { if (inList) { html += '</ol>'; inList = false; } continue; }
+      if (/^第[一二三四五六七八九十百千]+条/.test(line)) { if (inList) { html += '</ol>'; inList = false; } html += `<h2 id="heading-${i}">${escapeHtml(line)}</h2>`; continue; }
       if (/^\d+[\)\.]/.test(line) || /^[\(（]\d+[\)）]/.test(line)) {
-        if (!inList) {
-          html += '<ol style="list-style: none; padding-left: 0;">';
-          inList = true;
-        }
+        if (!inList) { html += '<ol style="list-style:none;padding-left:0;">'; inList = true; }
         const content = line.replace(/^[\d]+[\)\.]\s*/, '').replace(/^[\(（][\d]+[\)）]\s*/, '');
-        const numPrefix = line.match(/^[\d]+[\)\.]/);
-        html += `<li style="margin-bottom: 8px; padding-left: 1.5em; text-indent: -1.5em;"><strong>${numPrefix ? numPrefix[0] : ''}</strong> ${content}</li>`;
+        html += `<li style="margin-bottom:8px;padding-left:1.5em;text-indent:-1.5em;"><strong>${line.match(/^[\d]+[\)\.]/)?.[0]||''}</strong> ${content}</li>`;
         continue;
       }
-
-      // Check for subsection markers like "(" + letter + ")"
-      if (/^[\(（][a-z][\)）]/.test(line)) {
-        if (inList) {
-          html += '</ol>';
-          inList = false;
-        }
-        html += `<p style="padding-left: 1.5em; margin: 4px 0;"><em>${escapeHtml(line)}</em></p>`;
-        continue;
-      }
-
-      if (inList) {
-        html += '</ol>';
-        inList = false;
-      }
-
-      // Regular paragraph
+      if (/^[\(（][a-z][\)）]/.test(line)) { if (inList) { html += '</ol>'; inList = false; } html += `<p style="padding-left:1.5em;margin:4px 0;"><em>${escapeHtml(line)}</em></p>`; continue; }
+      if (inList) { html += '</ol>'; inList = false; }
       html += `<p>${escapeHtml(line)}</p>`;
     }
-
-    if (inList) {
-      html += '</ol>';
-    }
-
+    if (inList) html += '</ol>';
     return html;
-  }
-
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 
   // === Document Loading ===
   async function loadDocument(route) {
     let config = ROUTES[route];
-
-    // Auto-fallback: treat unknown route as direct filename
     if (!config && (route.endsWith('.md') || route.endsWith('.txt'))) {
       config = { file: route, title: route.replace(/\.(md|txt)$/i, '') };
     }
+    if (!config) { navigate(DEFAULT_ROUTE); return; }
 
-    if (!config) {
-      navigate(DEFAULT_ROUTE);
-      return;
-    }
-
-    // Update title
     docTitle.textContent = config.title;
-    document.title = `${config.title} - JMCL 文档`;
-
-    // Show loading
-    docBody.innerHTML = `
-      <div class="loading-state">
-        <div class="loading-spinner"></div>
-        <p>加载文档中...</p>
-      </div>
-    `;
+    document.title = `${config.title} - ${SITE.titleSuffix}`;
+    docBody.innerHTML = '<div class="loading-state"><div class="loading-spinner"></div><p>加载文档中...</p></div>';
     tocList.innerHTML = '';
-
-    // Update active nav
     updateActiveNav(route);
 
     try {
-      const response = await fetch(`${DOC_DIR}/${config.file}`);
+      const response = await fetch(`${SITE.docDir}/${config.file}`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
       let html;
 
       if (config.file.endsWith('.txt')) {
-        // Plain text file
-        const text = await response.text();
-        html = processTxt(text);
+        html = processTxt(await response.text());
       } else {
-        // Markdown file
-        let md = await response.text();
-        md = preprocessMarkdown(md);
-
-        // Configure marked
+        let md = preprocessMarkdown(await response.text());
         const renderer = new marked.Renderer();
-
-        // Custom heading renderer to add anchor links
         renderer.heading = function({ text, depth }) {
-          const slug = text.toLowerCase()
-            .replace(/[^\w\u4e00-\u9fff]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-          const anchorId = `heading-${slug}`;
-          return `<h${depth} id="${anchorId}">
-            <a class="heading-anchor" href="#${anchorId}" aria-hidden="true">#</a>
-            ${text}
-          </h${depth}>`;
+          const slug = text.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, '');
+          return `<h${depth} id="heading-${slug}"><a class="heading-anchor" href="#heading-${slug}" aria-hidden="true">#</a>${text}</h${depth}>`;
         };
-
-        // Custom code renderer
-        renderer.code = function({ text, lang, escaped }) {
+        renderer.code = function({ text, lang }) {
           const language = lang || '';
           const validLang = language && hljs.getLanguage(language) ? language : '';
-          const highlighted = validLang
-            ? hljs.highlight(text, { language: validLang }).value
-            : escapeHtml(text);
-          return `<pre data-language="${language}"><code class="hljs${validLang ? ' language-' + validLang : ''}">${highlighted}</code></pre>`;
+          const highlighted = validLang ? hljs.highlight(text, { language: validLang }).value : escapeHtml(text);
+          return `<pre data-language="${language}"><code class="hljs${validLang?' language-'+validLang:''}">${highlighted}</code></pre>`;
         };
-
-        // Custom link renderer - open external links in new tab
         renderer.link = function({ href, tokens }) {
           const isExternal = href && (href.startsWith('http://') || href.startsWith('https://'));
-          const attrs = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
-          const inner = this.parser.parseInline(tokens);
-          return `<a href="${href}"${attrs}>${inner}</a>`;
+          return `<a href="${href}"${isExternal?' target="_blank" rel="noopener noreferrer"':''}>${this.parser.parseInline(tokens)}</a>`;
         };
-
         marked.use({ renderer, breaks: true, gfm: true });
-
         html = marked.parse(md);
       }
 
-      // Set content
       docBody.innerHTML = html;
-
-      // Generate TOC
       generateTOC(docBody);
 
-      // Scroll to anchor if coming from a section link
       const scrollTo = sessionStorage.getItem('scrollTo');
       if (scrollTo) {
         sessionStorage.removeItem('scrollTo');
-        const slug = scrollTo.toLowerCase()
-          .replace(/[^\w\u4e00-\u9fff]+/g, '-')
-          .replace(/^-+|-+$/g, '');
-        setTimeout(() => {
-          const el = document.getElementById(`heading-${slug}`);
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 200);
+        const s = scrollTo.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, '');
+        setTimeout(() => { const el = document.getElementById('heading-'+s); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 200);
       }
-
-      // Set meta
-      docMeta.innerHTML = `<span>Open-code-Studio · JMCL 文档</span>`;
-
+      docMeta.innerHTML = `<span>${SITE.meta}</span>`;
     } catch (err) {
       console.error('Failed to load document:', err);
-      docBody.innerHTML = `
-        <div class="loading-state" style="gap: 12px;">
-          <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--md-sys-color-error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-          <p>文档加载失败</p>
-          <p style="font-size: 14px; color: var(--md-sys-color-on-surface-variant);">${err.message}</p>
-          <button onclick="location.reload()" style="
-            margin-top: 12px;
-            padding: 8px 24px;
-            border-radius: var(--md-sys-shape-full);
-            border: none;
-            background-color: var(--md-sys-color-primary);
-            color: var(--md-sys-color-on-primary);
-            cursor: pointer;
-            font-size: 14px;
-          ">重新加载</button>
-        </div>
-      `;
+      docBody.innerHTML = `<div class="loading-state" style="gap:12px"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--md-sys-color-error)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><p>文档加载失败</p><p style="font-size:14px;color:var(--md-sys-color-on-surface-variant)">${err.message}</p><button onclick="location.reload()" style="margin-top:12px;padding:8px 24px;border-radius:9999px;border:none;background:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary);cursor:pointer;font-size:14px">重新加载</button></div>`;
     }
   }
 
   // === Router ===
-  function navigate(route) {
-    const hash = route.startsWith('#') ? route.slice(1) : route;
-    window.location.hash = hash || DEFAULT_ROUTE;
-  }
-
-  function handleRoute() {
-    const hash = window.location.hash.slice(1) || DEFAULT_ROUTE;
-    loadDocument(hash);
-  }
-
-  // Listen for hash changes
+  function navigate(route) { window.location.hash = (route.startsWith('#') ? route.slice(1) : route) || DEFAULT_ROUTE; }
+  function handleRoute() { loadDocument(window.location.hash.slice(1) || DEFAULT_ROUTE); }
   window.addEventListener('hashchange', handleRoute);
 
-  // === Initialize ===
-  function init() {
-    // If there's no hash, set default
-    if (!window.location.hash) {
-      window.location.hash = DEFAULT_ROUTE;
-    } else {
-      handleRoute();
-    }
-  }
-
-  // Wait for marked and hljs to load
-  function waitForDeps() {
-    if (typeof marked !== 'undefined' && typeof hljs !== 'undefined') {
-      init();
-    } else {
-      setTimeout(waitForDeps, 100);
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', waitForDeps);
-  } else {
-    waitForDeps();
-  }
-
-  // === Intercept internal .md / .txt links → hash route ===
+  // === Intercept .md/.txt links ===
   docBody.addEventListener('click', (e) => {
-    const link = e.target.closest('a');
-    if (!link) return;
-    const href = link.getAttribute('href');
-    if (!href) return;
-    // Only process .md / .txt links
+    const link = e.target.closest('a'); if (!link) return;
+    const href = link.getAttribute('href'); if (!href) return;
     const lastPart = href.split('/').pop();
     const [filename, anchor] = lastPart.split('#');
     const decoded = decodeURIComponent(filename.split('?')[0]);
     if (!decoded.endsWith('.md') && !decoded.endsWith('.txt')) return;
-
     e.preventDefault();
-    // Same-site: has mapped route, or fallback to filename-as-route
     const route = FILE_TO_ROUTE[decoded] || decoded;
     if (anchor) sessionStorage.setItem('scrollTo', anchor);
-    // Cross-site → OCS if path contains /OCS/
-    if (href.includes('/OCS/')) {
-      const ocsRoute = OCS_FILE_TO_ROUTE[decoded] || decoded;
-      const hash = anchor ? `#${ocsRoute}&scroll=${encodeURIComponent(anchor)}` : `#${ocsRoute}`;
-      window.location.href = `../../OCS/page/index.html${hash}`;
-    } else {
-      navigate(`#${route}`);
-    }
-  });
-    }
+    navigate(`#${route}`);
   });
 
-  // === Theme Toggle Event ===
   themeToggle.addEventListener('click', toggleTheme);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('open')) closeDrawer(); });
 
-  // === Keyboard shortcuts ===
-  document.addEventListener('keydown', (e) => {
-    // Escape to close drawer
-    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-      closeDrawer();
-    }
-  });
+  // === Init ===
+  async function init() {
+    await loadConfig();
+    renderSidebarNav();
+    renderSidebarLinks();
+    if (!window.location.hash) window.location.hash = DEFAULT_ROUTE;
+    else handleRoute();
+  }
 
+  function waitForDeps() {
+    if (typeof marked !== 'undefined' && typeof hljs !== 'undefined') init();
+    else setTimeout(waitForDeps, 100);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', waitForDeps);
+  else waitForDeps();
 })();

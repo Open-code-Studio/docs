@@ -1,0 +1,22 @@
+{
+  "site": {
+    "name": "Open-code-Studio",
+    "titleSuffix": "Open-code-Studio 文档",
+    "meta": "Open-code-Studio · 文档站点",
+    "docDir": "../docs",
+    "logo": "logo.jpg"
+  },
+  "nav": [
+    { "route": "/", "file": "README.md", "title": "首页", "icon": "home" },
+    { "route": "/projects", "file": "PROJECTS.md", "title": "开源项目", "icon": "projects" },
+    { "route": "/contributing", "file": "CONTRIBUTING.md", "title": "贡献指南", "icon": "handshake" },
+    { "route": "/join", "file": "JOIN.md", "title": "加入我们", "icon": "join" },
+    { "route": "/contact", "file": "CONTACT.md", "title": "联系我们", "icon": "contact" },
+    { "route": "/info", "file": "info.md", "title": "关于", "icon": "info" }
+  ],
+  "sidebarLinks": [
+    { "title": "GitHub", "url": "https://github.com/Open-code-Studio", "external": true },
+    { "title": "JMCL 文档", "url": "../../JMCL/page/index.html" },
+    { "title": "Openwebdocs.kit-MD3", "url": "../../Openwebdocs.kit-MD3/page/index.html" }
+  ]
+}

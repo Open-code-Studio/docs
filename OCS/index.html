@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open-code-Studio</title>
+  <meta http-equiv="refresh" content="0;url=page/">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      background: #121212; color: #E4E2DF;
+      min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
+    }
+    .box { text-align:center; }
+    .box img { width:72px; height:72px; border-radius:16px; margin-bottom:20px; }
+    .box h1 { font-size:1.4rem; font-weight:700; margin-bottom:4px; }
+    .box p { color:#C8C5C2; margin-bottom:16px; font-size:0.9rem; }
+    .box a { color:#81DAAB; text-decoration:none; font-weight:500; font-size:0.85rem; }
+  </style>
+  <link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="box">
+    <img src="page/logo.jpg" alt="" id="logoImg">
+    <h1 id="siteName">加载中...</h1>
+    <p id="siteSub">正在前往...</p>
+    <a href="page/">如果没有自动跳转，请点击这里</a>
+  </div>
+  <script>
+    (async function(){
+      try {
+        const r = await fetch('page/config.json');
+        const cfg = await r.json();
+        document.getElementById('siteName').textContent = cfg.site?.name || 'Open-code-Studio';
+        document.getElementById('siteSub').textContent = '正在前往 ' + (cfg.site?.name || '') + '…';
+        document.title = cfg.site?.name || 'Open-code-Studio';
+        if (cfg.site?.logo) document.getElementById('logoImg').src = cfg.site.logo;
+      } catch(e) {
+        document.getElementById('siteName').textContent = 'Open-code-Studio';
+        document.getElementById('siteSub').textContent = '正在前往…';
+      }
+    })();
+  </script>
+</body>
+</html>

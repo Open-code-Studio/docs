@@ -1,0 +1,22 @@
+{
+  "site": {
+    "name": "JMCL",
+    "titleSuffix": "JMCL 文档",
+    "meta": "Open-code-Studio · JMCL 文档",
+    "docDir": "../docs/JMCL"
+  },
+  "nav": [
+    { "route": "/", "file": "README_zh.md", "title": "项目介绍", "icon": "home" },
+    { "route": "/platform", "file": "PLATFORM_zh.md", "title": "平台支持", "icon": "devices" },
+    { "route": "/release", "file": "ReleaseSchedule_zh.md", "title": "发布计划", "icon": "schedule" },
+    { "route": "/contributing", "file": "Contributing_zh.md", "title": "贡献指南", "icon": "handshake" },
+    { "route": "/macos", "file": "macOS_Usage_zh.md", "title": "macOS 技巧", "icon": "computer" },
+    { "route": "/localization", "file": "Localization_zh.md", "title": "本地化指南", "icon": "translate" },
+    { "route": "/license", "file": "使用许可.txt", "title": "使用许可", "icon": "description" },
+    { "route": "/info", "file": "info.md", "title": "关于", "icon": "info" }
+  ],
+  "sidebarLinks": [
+    { "title": "Open-code-Studio", "url": "https://github.com/Open-code-Studio", "external": true },
+    { "title": "OCS 主页", "url": "../../OCS/page/index.html" }
+  ]
+}

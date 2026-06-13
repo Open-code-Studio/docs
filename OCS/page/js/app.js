@@ -20,6 +20,17 @@
     FILE_TO_ROUTE[cfg.file] = route;
   }
 
+  // Cross-site: JMCL filenames → routes (for inter-site link resolution)
+  const JMCL_FILE_TO_ROUTE = {
+    'README_zh.md':         '/',
+    'PLATFORM_zh.md':        '/platform',
+    'ReleaseSchedule_zh.md': '/release',
+    'Contributing_zh.md':    '/contributing',
+    'macOS_Usage_zh.md':     '/macos',
+    'Localization_zh.md':    '/localization',
+    '使用许可.txt':           '/license',
+  };
+
   const DEFAULT_ROUTE = '/';
   const DOC_DIR = '../docs';
 
@@ -294,10 +305,17 @@
     const href = link.getAttribute('href');
     if (!href) return;
     const filename = href.split('/').pop().split('#')[0].split('?')[0];
-    const route = FILE_TO_ROUTE[decodeURIComponent(filename)];
-    if (route) {
+    const decoded = decodeURIComponent(filename);
+    // Same-site: navigate within this SPA
+    if (FILE_TO_ROUTE[decoded]) {
       e.preventDefault();
-      navigate(`#${route}`);
+      navigate(`#${FILE_TO_ROUTE[decoded]}`);
+      return;
+    }
+    // Cross-site → JMCL: navigate to JMCL page with hash
+    if (JMCL_FILE_TO_ROUTE[decoded]) {
+      e.preventDefault();
+      window.location.href = `../../JMCL/page/index.html#${JMCL_FILE_TO_ROUTE[decoded]}`;
     }
   });
 

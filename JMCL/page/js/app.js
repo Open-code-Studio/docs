@@ -22,6 +22,15 @@
     FILE_TO_ROUTE[cfg.file] = route;
   }
 
+  // Cross-site: OCS filenames → routes (for inter-site link resolution)
+  const OCS_FILE_TO_ROUTE = {
+    'README.md':       '/',
+    'PROJECTS.md':     '/projects',
+    'CONTRIBUTING.md': '/contributing',
+    'JOIN.md':         '/join',
+    'CONTACT.md':      '/contact',
+  };
+
   const DEFAULT_ROUTE = '/';
   const DOC_DIR = '../docs/JMCL';
 
@@ -401,10 +410,19 @@
     if (!href) return;
     // Extract filename from URL (ignore path, hash, query)
     const filename = href.split('/').pop().split('#')[0].split('?')[0];
-    const route = FILE_TO_ROUTE[decodeURIComponent(filename)];
-    if (route) {
+    const decoded = decodeURIComponent(filename);
+    // Same-site: navigate within this SPA
+    if (FILE_TO_ROUTE[decoded]) {
       e.preventDefault();
-      navigate(`#${route}`);
+      navigate(`#${FILE_TO_ROUTE[decoded]}`);
+      return;
+    }
+    // Cross-site → OCS: navigate to OCS page with hash
+    if (OCS_FILE_TO_ROUTE[decoded]) {
+      e.preventDefault();
+      window.location.href = `../../OCS/page/index.html#${OCS_FILE_TO_ROUTE[decoded]}`;
+    }
+  });
     }
   });
 

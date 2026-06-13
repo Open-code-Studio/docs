@@ -305,10 +305,11 @@
         };
 
         // Custom link renderer - open external links in new tab
-        renderer.link = function({ text, href }) {
+        renderer.link = function({ href, tokens }) {
           const isExternal = href && (href.startsWith('http://') || href.startsWith('https://'));
           const attrs = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
-          return `<a href="${href}"${attrs}>${text}</a>`;
+          const inner = this.parser.parseInline(tokens);
+          return `<a href="${href}"${attrs}>${inner}</a>`;
         };
 
         marked.use({ renderer, breaks: true, gfm: true });

@@ -1,4 +1,4 @@
-![OCS Logo](../page/logo.jpg)
+![OCS Logo](logo.jpg)
 
 # 🏠 Open-code-Studio
 

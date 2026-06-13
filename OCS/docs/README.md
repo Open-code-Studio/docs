@@ -1,5 +1,3 @@
-![OCS Logo](logo.jpg)
-
 # 🏠 Open-code-Studio
 
 **Open-code-Studio** 是一个致力于开发高质量开源软件的组织。我们专注于构建实用、优雅、跨平台的工具和应用，以提升开发者和用户的日常体验。

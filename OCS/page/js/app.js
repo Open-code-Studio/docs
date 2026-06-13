@@ -194,13 +194,6 @@
         </h${depth}>`;
       };
 
-      renderer.table = function({ header, body }) {
-        return `<div class="table-wrapper"><table>
-          <thead>${header}</thead>
-          <tbody>${body}</tbody>
-        </table></div>`;
-      };
-
       renderer.code = function({ text, lang, escaped }) {
         const language = lang || '';
         const validLang = language && hljs.getLanguage(language) ? language : '';

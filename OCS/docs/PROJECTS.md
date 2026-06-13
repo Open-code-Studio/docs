@@ -12,7 +12,7 @@ Open-code-Studio 维护的所有开源项目列表。
 - **平台支持**：Windows / macOS / Linux
 - **许可证**：开源
 - **GitHub**：[Open-code-Studio/JMCL](https://github.com/Open-code-Studio/JMCL)
-- **文档**：[JMCL 文档站](JMCL/page/index.html)
+- **文档**：[JMCL 文档站](https://open-code-studio.github.io/docs/JMCL/page/index.html#/)
 
 ### 主要特性
 

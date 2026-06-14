@@ -7,9 +7,9 @@
     "logo": "logo.jpg"
   },
   "nav": [
-    { "route": "/", "file": "README.md", "title": "首页", "icon": "home" },
-    { "route": "/guide", "file": "guide.md", "title": "指南", "icon": "schedule" },
-    { "route": "/about", "file": "about.md", "title": "关于", "icon": "info" }
+    { "title": "首页", "icon": "home" },
+    { "title": "指南", "icon": "schedule" },
+    { "title": "关于", "icon": "info" }
   ],
   "sidebarLinks": [
     { "title": "GitHub", "url": "https://github.com", "external": true }

@@ -36,26 +36,46 @@
       if (cfg.nav && Array.isArray(cfg.nav)) {
         NAV = cfg.nav;
         const nr = {}, nf = {};
-        cfg.nav.forEach(item => {
-          nr[item.route] = { file: item.file, title: item.title, icon: item.icon || 'description' };
-          nf[item.file] = item.route;
-        });
+        function processNav(items, parentRoute) {
+          items.forEach(item => {
+            const route = item.route || (parentRoute ? parentRoute + '/' : '/') + (item.title || item.file||'').toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, '');
+            const file = item.file || (item.children ? route.replace(/^\//, '') + '/README.md' : (route === '/' ? 'README.md' : route.replace(/^\//, '') + '.md'));
+            nr[route] = { file, title: item.title, icon: item.icon || 'description' };
+            nf[file] = route;
+            if (item.children) processNav(item.children, route);
+          });
+        }
+        processNav(cfg.nav);
         Object.assign(ROUTES, nr); Object.assign(FILE_TO_ROUTE, nf);
       }
       SIDEBAR_LINKS = cfg.sidebarLinks || [];
     } catch (e) { console.warn('config.json load failed:', e.message); }
   }
 
-  // Render sidebar from config
-  function renderSidebarNav() {
+  // Render sidebar from config (supports nested)
+  function renderSidebar() {
     if (!NAV.length) return;
-    navList.innerHTML = NAV.map(item => `
-      <li class="nav-item${item.route === DEFAULT_ROUTE ? ' active' : ''}" data-route="${item.route}">
-        <a href="#${item.route}" class="nav-link">
-          <svg viewBox="0 0 24 24" width="20" height="20" class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconSVG(item.icon)}</svg>
-          <span class="nav-label">${item.title}</span>
-        </a>
-      </li>`).join('');
+    function buildHTML(items, depth) {
+      return items.map(item => {
+        const hasKids = item.children && item.children.length;
+        const route = hasKids ? null : (item.route || (item.title || '').toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, ''));
+        const pad = depth * 16;
+        let html = '';
+        if (hasKids) {
+          html += `<li class="nav-category" style="padding-left:${pad}px;font-size:11px;font-weight:600;color:var(--md-sys-color-on-surface-variant);padding-top:12px;padding-bottom:4px;text-transform:uppercase;letter-spacing:0.05em;">${item.title}</li>`;
+          html += buildHTML(item.children, depth + 1);
+        } else {
+          html += `<li class="nav-item${route === DEFAULT_ROUTE ? ' active' : ''}" data-route="#${route}" style="padding-left:${pad}px;">
+            <a href="#${route}" class="nav-link">
+              <svg viewBox="0 0 24 24" width="20" height="20" class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconSVG(item.icon || 'description')}</svg>
+              <span class="nav-label">${item.title}</span>
+            </a>
+          </li>`;
+        }
+        return html;
+      }).join('');
+    }
+    navList.innerHTML = buildHTML(NAV, 0);
   }
 
   function renderSidebarLinks() {
@@ -192,12 +212,14 @@
     try {
       const response = await fetch(`${SITE.docDir}/${config.file}`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const rawText = await response.text();
+      pageCache[route] = { title: config.title, content: rawText, file: config.file };
       let html;
 
       if (config.file.endsWith('.txt')) {
-        html = processTxt(await response.text());
+        html = processTxt(rawText);
       } else {
-        let md = preprocessMarkdown(await response.text());
+        let md = preprocessMarkdown(rawText);
         const renderer = new marked.Renderer();
         renderer.heading = function({ text, depth }) {
           const slug = text.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, '');
@@ -262,12 +284,49 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('open')) closeDrawer(); });
 
   // === Init ===
+  const pageCache = {};
   async function init() {
     await loadConfig();
-    renderSidebarNav();
+    renderSidebar();
     renderSidebarLinks();
     if (!window.location.hash) window.location.hash = DEFAULT_ROUTE;
     else handleRoute();
+
+    // Expose OWD API
+    window.OWD = {
+      config: SITE, routes: ROUTES, nav: NAV,
+      cache: pageCache,
+      navigate(route) { if (route) navigate('#' + route.replace(/^#/, '')); },
+      async getPage(route) {
+        const r = ROUTES[route];
+        if (!r) return null;
+        if (pageCache[route]) return pageCache[route];
+        try {
+          const resp = await fetch(`${SITE.docDir}/${r.file}`);
+          if (!resp.ok) return null;
+          const text = await resp.text();
+          pageCache[route] = { title: r.title, content: text, file: r.file };
+          return pageCache[route];
+        } catch (e) { return null; }
+      },
+      search(query) {
+        const q = query.toLowerCase();
+        const results = [];
+        for (const [route, page] of Object.entries(pageCache)) {
+          if (page.content.toLowerCase().includes(q)) {
+            const idx = page.content.toLowerCase().indexOf(q);
+            const snippet = page.content.substring(Math.max(0, idx - 30), idx + q.length + 80).replace(/\n/g, ' ');
+            results.push({ route, title: page.title, snippet: '...' + snippet + '...', file: page.file });
+          }
+        }
+        return results;
+      },
+      async searchAll(query) {
+        const allRoutes = Object.keys(ROUTES);
+        await Promise.all(allRoutes.map(r => this.getPage(r)));
+        return this.search(query);
+      }
+    };
   }
 
   function waitForDeps() {

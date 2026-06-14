@@ -34,7 +34,13 @@
         function processNav(items, parentRoute) {
           items.forEach(item => {
             const route = item.route || (parentRoute ? parentRoute + '/' : '/') + (item.title || item.file||'').toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, '');
-            const file = item.file || (item.children ? route.replace(/^\//, '') + '/README.md' : (route === '/' ? 'README.md' : route.replace(/^\//, '') + '.md'));
+            const slug = route.split('/').pop();
+            let file = item.file;
+            if (!file) {
+              if (item.children) file = route.replace(/^\//, '') + '/README.md';
+              else if (parentRoute) file = parentRoute.replace(/^\//, '') + '/docs/' + slug + '.md';
+              else file = route === '/' ? 'README.md' : route.replace(/^\//, '') + '.md';
+            }
             nr[route] = { file, title: item.title, icon: item.icon || 'info' };
             nf[file] = route;
             if (item.children) processNav(item.children, route);

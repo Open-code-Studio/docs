@@ -23,7 +23,7 @@
     { "route": "/info", "file": "info.md", "title": "关于", "icon": "info" }
   ],
   "sidebarLinks": [
-    { "title": "GitHub", "url": "https://github.com/Open-code-Studio", "external": true },
+    { "title": "GitHub", "url": "https://github.com/Open-code-Studio/Open-web-docs.kit", "external": true },
     { "title": "OCS 主页", "url": "../../OCS/page/index.html" }
   ]
 }

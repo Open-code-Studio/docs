@@ -14,11 +14,11 @@
     { "route": "/customize", "file": "customize.md", "title": "自定义主题", "icon": "customize" },
     { "route": "/deploy", "file": "deploy.md", "title": "GitHub Pages 部署", "icon": "devices" },
     { "title": "API 参考", "route": "/api", "children": [
-      { "title": "配置 API", "icon": "computer" },
-      { "title": "导航 API", "icon": "schedule" },
-      { "title": "搜索 API", "icon": "translate" },
-      { "title": "页面 API", "icon": "description" },
-      { "title": "主题 API", "icon": "customize" }
+      { "title": "配置 API", "route": "/api/config", "icon": "computer" },
+      { "title": "导航 API", "route": "/api/navigation", "icon": "schedule" },
+      { "title": "搜索 API", "route": "/api/search", "icon": "translate" },
+      { "title": "页面 API", "route": "/api/page", "icon": "description" },
+      { "title": "主题 API", "route": "/api/theme", "icon": "customize" }
     ]},
     { "route": "/info", "file": "info.md", "title": "关于", "icon": "info" }
   ],

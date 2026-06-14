@@ -33,7 +33,9 @@
         const nr = {}, nf = {};
         function processNav(items, parentRoute) {
           items.forEach(item => {
-            const route = item.route || (parentRoute ? parentRoute + '/' : '/') + (item.title || item.file||'').toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, '');
+            const tag = (item.title || item.file || '').toLowerCase();
+            const autoSlug = tag.replace(/[\u4e00-\u9fff]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || tag.replace(/[^\w]+/g, '-').replace(/^-+|-+$/g, '');
+            const route = item.route || (parentRoute ? parentRoute + '/' : '/') + autoSlug;
             item.route = route;
             const slug = route.split('/').pop();
             let file = item.file;

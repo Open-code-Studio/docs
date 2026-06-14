@@ -41,3 +41,36 @@
 - **CI/CD**：GitHub Actions
 
 请随时浏览我们的 [GitHub 组织](https://github.com/Open-code-Studio) 了解更多。
+
+## 成员介绍
+> 仓颉:
+>
+> OCS的核心程序员/管理员.
+> 
+> 支持的语言:
+> 
+> JAVA(JVM还是太好用了),DART(快速跨平台构建),C++(...),C(专业首选),Python(瞎搞,批处理),JS(瞎搞,写网站),TS(部分支持库,组件),Markdown(写文档要用,现在你看到的这个文章就是用Markdown写的)
+
+> 萧小红:
+> 
+> MC Player.
+> 
+> 高手玩家,红石大佬,~~但PVP不怎么样,也不会高级跑酷~~.
+
+> SYSTEM
+> 
+> 权威的系统.
+> 
+> 识别代码中的BUG,服务器防火墙的BUG,并快速修复.
+
+> NULL
+> 
+> 神秘的技术成员.
+> 
+> `/op`,`sudo su`是他最爱的命令...(~~谁不喜欢提权搞事呢...~~)
+
+
+> [!note]
+> 成为我们的成员：
+> 
+> 请前往b站 Open_Code_Studio 请求。

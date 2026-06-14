@@ -196,6 +196,9 @@
     await loadConfig();
     renderSidebar();
     renderSidebarLinks();
+    // Debug: show resolved routes
+    console.log('[OWD] DOC_DIR:', SITE.docDir);
+    console.log('[OWD] ROUTES:', JSON.stringify(ROUTES, null, 2));
     if (!window.location.hash) window.location.hash = DEFAULT_ROUTE;
     else handleRoute();
     window.OWD = { config:SITE, routes:ROUTES, nav:NAV, cache:pageCache,

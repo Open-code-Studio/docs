@@ -29,6 +29,7 @@
 | [JS 配置](js.md) | config.json 配置说明 |
 | [自定义主题](customize.md) | 修改颜色和字体 |
 | [GitHub Pages 部署](deploy.md) | 免费部署到 GitHub Pages |
+| [🔌 API 参考](api/docs/config.md) | 配置 / 导航 / 搜索 / 页面 / 主题 |
 | [关于](info.md) | 框架介绍与技术细节 |
 
 ---

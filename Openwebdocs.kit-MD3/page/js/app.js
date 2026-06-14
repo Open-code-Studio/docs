@@ -34,6 +34,7 @@
         function processNav(items, parentRoute) {
           items.forEach(item => {
             const route = item.route || (parentRoute ? parentRoute + '/' : '/') + (item.title || item.file||'').toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, '');
+            item.route = route;
             const slug = route.split('/').pop();
             let file = item.file;
             if (!file) {

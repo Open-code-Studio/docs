@@ -101,7 +101,7 @@
     if (!hs.length) { document.getElementById('tocSidebar').style.display = 'none'; return; }
     document.getElementById('tocSidebar').style.display = 'block';
     hs.forEach((h, i) => {
-      if (!h.id) h.id = `heading-${i}`;
+      if (!h.id) h.id = `${i}`;
       const li = document.createElement('li'), a = document.createElement('a');
       a.href = `#${h.id}`; a.textContent = h.textContent; a.className = h.tagName === 'H3' ? 'toc-h3' : 'toc-h2';
       a.addEventListener('click', (e) => { e.preventDefault(); const t = document.getElementById(h.id); if (t) { t.scrollIntoView({ behavior:'smooth', block:'start' }); history.replaceState(null,'',`#${h.id}`); } });
@@ -126,7 +126,7 @@
       const renderer = new marked.Renderer();
       renderer.heading = function({ text, depth }) {
         const slug = text.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, '');
-        return `<h${depth} id="heading-${slug}"><a class="heading-anchor" href="#heading-${slug}" aria-hidden="true">#</a>${text}</h${depth}>`;
+        return `<h${depth} id="${slug}"><a class="heading-anchor" href="#${slug}" aria-hidden="true">#</a>${text}</h${depth}>`;
       };
       renderer.code = function({ text, lang }) {
         const language = lang || '', validLang = language && hljs.getLanguage(language) ? language : '';
@@ -141,7 +141,7 @@
       docBody.innerHTML = marked.parse(md);
       generateTOC(docBody);
       const scrollTo = sessionStorage.getItem('scrollTo');
-      if (scrollTo) { sessionStorage.removeItem('scrollTo'); const s = scrollTo.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, ''); setTimeout(() => { const el = document.getElementById('heading-'+s); if (el) el.scrollIntoView({ behavior:'smooth', block:'start' }); }, 200); }
+      if (scrollTo) { sessionStorage.removeItem('scrollTo'); const s = scrollTo.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-+|-+$/g, ''); setTimeout(() => { const el = document.getElementById(s); if (el) el.scrollIntoView({ behavior:'smooth', block:'start' }); }, 200); }
       docMeta.innerHTML = `<span>${SITE.meta}</span>`;
     } catch (err) {
       console.error('Failed to load document:', err);
@@ -150,7 +150,12 @@
   }
 
   function navigate(route) { window.location.hash = (route.startsWith('#') ? route.slice(1) : route) || DEFAULT_ROUTE; }
-  function handleRoute() { loadDocument(window.location.hash.slice(1) || DEFAULT_ROUTE); }
+  function handleRoute() {
+    const hash = window.location.hash.slice(1);
+    if (!hash || hash.startsWith('/') || hash.endsWith('.md') || hash.endsWith('.txt')) {
+      loadDocument(hash || DEFAULT_ROUTE);
+    }
+  }
   window.addEventListener('hashchange', handleRoute);
 
   docBody.addEventListener('click', (e) => {

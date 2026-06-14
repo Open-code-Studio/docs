@@ -1,0 +1,17 @@
+{
+  "site": {
+    "name": "My Docs",
+    "titleSuffix": "My Docs",
+    "meta": "My Docs · 文档站",
+    "docDir": "../docs",
+    "logo": "logo.jpg"
+  },
+  "nav": [
+    { "route": "/", "file": "README.md", "title": "首页", "icon": "home" },
+    { "route": "/guide", "file": "guide.md", "title": "指南", "icon": "schedule" },
+    { "route": "/about", "file": "about.md", "title": "关于", "icon": "info" }
+  ],
+  "sidebarLinks": [
+    { "title": "GitHub", "url": "https://github.com", "external": true }
+  ]
+}

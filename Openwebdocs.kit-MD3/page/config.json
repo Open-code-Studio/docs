@@ -17,7 +17,6 @@
   ],
   "sidebarLinks": [
     { "title": "GitHub", "url": "https://github.com/Open-code-Studio", "external": true },
-    { "title": "OCS 主页", "url": "../../OCS/page/index.html" },
-    { "title": "OWD.K-MD3 模板", "url": "../../OWD.K-MD3/page/index.html" }
+    { "title": "OCS 主页", "url": "../../OCS/page/index.html" }
   ]
 }

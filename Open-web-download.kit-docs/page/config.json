@@ -1,0 +1,28 @@
+{
+  "site": {
+    "name": "Open-web-download.kit",
+    "titleSuffix": "文档",
+    "meta": "Open-web-download.kit · 下载站框架",
+    "docDir": "../docs",
+    "logo": "logo.jpg"
+  },
+  "nav": [
+    { "route": "/", "file": "README.md", "title": "概览", "icon": "home" },
+    { "route": "/quick-start", "file": "guide/quick-start.md", "title": "快速开始", "icon": "schedule" },
+    { "route": "/structure", "file": "guide/structure.md", "title": "目录结构", "icon": "devices" },
+    { "route": "/config", "file": "guide/config.md", "title": "配置说明", "icon": "computer" },
+    { "title": "API 参考", "route": "/api", "children": [
+      { "route": "/api/main", "file": "api/main.md", "title": "main.js (核心)", "icon": "code" },
+      { "route": "/api/config-js", "file": "api/config-js.md", "title": "config.js", "icon": "code" },
+      { "route": "/api/projects", "file": "api/projects.md", "title": "projects.js", "icon": "code" },
+      { "route": "/api/theme", "file": "api/theme.md", "title": "主题与颜色系统", "icon": "code" },
+      { "route": "/api/css", "file": "api/css.md", "title": "CSS 架构", "icon": "code" }
+    ]},
+    { "route": "/publish", "file": "guide/publish.md", "title": "发布项目", "icon": "description" },
+    { "route": "/deploy", "file": "guide/deploy.md", "title": "部署", "icon": "devices" },
+    { "route": "/info", "file": "info.md", "title": "关于", "icon": "info" }
+  ],
+  "sidebarLinks": [
+    { "title": "GitHub 仓库", "url": "https://github.com/Open-code-Studio/Open-web-download.kit", "external": true }
+  ]
+}

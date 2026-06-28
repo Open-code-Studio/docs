@@ -1,0 +1,166 @@
+/* ============================================
+   Components - MD3 Styled UI Elements
+   ============================================ */
+
+/* === Icon Button === */
+.icon-button {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-full);
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.icon-button svg {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.icon-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.icon-button:hover::after {
+  opacity: 0.08;
+}
+
+.icon-button:active::after {
+  opacity: 0.12;
+}
+
+.icon-button:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+/* === Doc Header === */
+.doc-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.doc-title {
+  font-family: 'Noto Sans SC', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 8px;
+}
+
+.doc-meta {
+  font-size: 14px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.doc-meta a {
+  color: var(--md-sys-color-primary);
+}
+
+/* === Details / Accordion === */
+details {
+  margin: 16px 0;
+  border-radius: var(--md-sys-shape-medium);
+  overflow: hidden;
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: border-color 0.2s ease;
+}
+
+details[open] {
+  border-color: var(--md-sys-color-primary);
+}
+
+summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--md-sys-color-primary);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+summary::marker {
+  color: var(--md-sys-color-primary);
+}
+
+details > :not(summary) {
+  padding: 0 16px 16px;
+}
+
+/* === Blockquote === */
+blockquote {
+  margin: 16px 0;
+  padding: 16px 20px;
+  border-radius: var(--md-sys-shape-medium);
+  background-color: var(--md-sys-color-surface-container-low);
+  border-left: 4px solid var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+blockquote p {
+  margin: 4px 0;
+}
+
+blockquote > :first-child {
+  margin-top: 0;
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* === Horizontal Rule === */
+hr {
+  border: none;
+  height: 1px;
+  background-color: var(--md-sys-color-outline-variant);
+  margin: 24px 0;
+}
+
+/* === Brand Icon SVG === */
+.brand-icon svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* === Theme Transition === */
+html.transitioning * {
+  transition: background-color 0.3s ease,
+              color 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease !important;
+}
+
+/* === Keyboard shortcuts === */
+kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  font-family: 'JetBrains Mono', "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-extra-small);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}

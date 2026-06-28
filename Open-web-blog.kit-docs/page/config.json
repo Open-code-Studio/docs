@@ -1,0 +1,29 @@
+{
+  "site": {
+    "name": "Open Web Blog Kit",
+    "titleSuffix": "Open Web Blog 文档",
+    "meta": "Open Web Blog Kit · 轻量博客框架",
+    "docDir": "../docs",
+    "logo": "logo.jpg"
+  },
+  "nav": [
+    { "route": "/", "file": "README.md", "title": "概览", "icon": "home" },
+    { "route": "/quick-start", "file": "guide/quick-start.md", "title": "快速开始", "icon": "schedule" },
+    { "route": "/structure", "file": "guide/structure.md", "title": "目录结构", "icon": "devices" },
+    { "route": "/config", "file": "guide/config.md", "title": "配置说明", "icon": "computer" },
+    { "title": "API 参考", "route": "/api", "children": [
+      { "route": "/api/app", "file": "api/app.md", "title": "app.js", "icon": "code" },
+      { "route": "/api/page", "file": "api/page.md", "title": "page.js", "icon": "code" },
+      { "route": "/api/extensions", "file": "api/extensions.md", "title": "extensions.js", "icon": "code" },
+      { "route": "/api/theme", "file": "api/theme.md", "title": "theme.js", "icon": "code" },
+      { "route": "/api/transitions", "file": "api/transitions.md", "title": "transitions.js", "icon": "code" },
+      { "route": "/api/moments", "file": "api/moments.md", "title": "moments.js", "icon": "code" }
+    ]},
+    { "route": "/writing", "file": "guide/writing.md", "title": "编写文章", "icon": "description" },
+    { "route": "/deploy", "file": "guide/deploy.md", "title": "部署", "icon": "devices" },
+    { "route": "/info", "file": "info.md", "title": "关于", "icon": "info" }
+  ],
+  "sidebarLinks": [
+    { "title": "GitHub 仓库", "url": "https://github.com/Open-code-Studio/Open-web-blog.kit", "external": true }
+  ]
+}

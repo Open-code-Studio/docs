@@ -17,6 +17,8 @@
   "sidebarLinks": [
     { "title": "GitHub", "url": "https://github.com/Open-code-Studio", "external": true },
     { "title": "JMCL 文档", "url": "../../JMCL/page/index.html" },
-    { "title": "Openwebdocs.kit-MD3", "url": "../../Openwebdocs.kit-MD3/page/index.html" }
+    { "title": "Openwebdocs.kit-MD3", "url": "../../Openwebdocs.kit-MD3/page/index.html" },
+    { "title": "Open-web-blog.kit", "url": "../../Open-web-blog.kit-docs/page/index.html" },
+    { "title": "Open-web-download.kit", "url": "../../Open-web-download.kit-docs/page/index.html" }
   ]
 }
